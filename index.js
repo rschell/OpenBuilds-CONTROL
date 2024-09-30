@@ -522,13 +522,12 @@ async function findPorts() {
     status.comms.interfaces.ports[i].img = data.img;
     status.comms.interfaces.ports[i].note = data.note;
   }
+  return ports;
 }
-findPorts()
+oldportslist = findPorts()
 
 async function findChangedPorts() {
-  const ports = await SerialPort.list()
-  // console.log(ports)
-  status.comms.interfaces.ports = ports;
+  const ports = findPorts()
   if (!_.isEqual(ports, oldportslist)) {
     var newPorts = _.differenceWith(ports, oldportslist, _.isEqual)
     if (newPorts.length > 0) {
@@ -540,8 +539,6 @@ async function findChangedPorts() {
     }
   }
   oldportslist = ports;
-  // throw new Error('No ports found')
-  findPorts()
 }
 
 // async function findDisks() {
